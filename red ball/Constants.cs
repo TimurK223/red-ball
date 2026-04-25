@@ -16,4 +16,11 @@ namespace red_ball
         Base = 1,
         Stone = 3
     }
+
+    public enum StateBall
+    {
+        OnFloor,
+        InFall,
+        InWater
+    }
 }

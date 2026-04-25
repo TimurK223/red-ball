@@ -24,6 +24,12 @@ namespace red_ball
             return new Force(1, f1.Direction * f1.Multiplier + f2.Direction * f2.Multiplier);
         }
 
+        public bool IsZeroForce()
+        {
+            return Direction.Length == 0;
+        }
+
+
     }
 
 
@@ -53,9 +59,6 @@ namespace red_ball
         {
             return new Point(p.X * k, p.Y * k);
         }
-
-
-
     }
 
     public class Vector

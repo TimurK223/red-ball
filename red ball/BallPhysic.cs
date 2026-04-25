@@ -11,7 +11,7 @@ namespace red_ball
         private static Dictionary<Keys, Action<Ball>> MoveDirection = new Dictionary<Keys, Action<Ball>>() {
             {Keys.A, (b) => b.forcesX[0] = new Force(1, new Vector((0, 0), (-Constant.sizeBall/2, 0)))},
             {Keys.D, (b) => b.forcesX[0] = new Force(1, new Vector( (0, 0),(Constant.sizeBall/2, 0)))},
-            {Keys.Space, (b) => b.forcesY[0] = new Force(1, new Vector( (0,0), (0, -Constant.sizeBall/2))) }
+            {Keys.Space, (b) => b.Jump()  } 
         };
         private static Dictionary<Keys, Action<Ball>> NotMoveDirection = new Dictionary<Keys, Action<Ball>>() {
             {Keys.A, (b) => b.forcesX[0] = Constant.zeroForce},
@@ -24,6 +24,9 @@ namespace red_ball
         private float speedY;
         float[] acc = new float[2];
         private float maxSpeed;
+        private float minY = 500;
+        private StateBall state;
+        
 
 
 
@@ -39,8 +42,6 @@ namespace red_ball
             {
                 forcesX[0] = Constant.zeroForce;
                 forcesY[0] = Constant.zeroForce;
-                speedX = 0;
-                speedY = 0;
             }
             Update();
         }
@@ -69,7 +70,18 @@ namespace red_ball
         public void СalculateВisplacement()
         {
             center.X += speedX;
-            center.Y += speedY;
+            center.Y = -(center.Y + speedY) >= -minY ? center.Y + speedY : minY;
+        }
+
+        public void Jump()
+        {
+            if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
+                forcesY[0] = new Force(1, new Vector((0, 0), (0, -100)));
+        }
+
+        public void ChangeState(StateBall newState)
+        {
+            state = newState; 
         }
     }
 }
