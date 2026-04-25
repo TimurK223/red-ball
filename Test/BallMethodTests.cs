@@ -41,7 +41,7 @@ namespace Test
         {
             var startPoint = new Point(500, 500);
             var ball = new Ball(TypeBall.Base, 20, new Point(500, 500));
-            ball.ChangeState(StateBall.OnFloor);
+            ball.ChangeState(StateBall.InFall);
             ball.Jump();
             ball.Update();
             var t = startPoint.Y == ball.center.Y;
