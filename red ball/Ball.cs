@@ -14,14 +14,13 @@ namespace red_ball
         public int size = Constant.sizeBall;
         public Point center;
        
-        public Ball(TypeBall typeBall, int size, Point center)
+        public Ball(TypeBall typeBall, Point center)
         {
             _typeBall = typeBall;
-            this.size = size;
             this.center = center;
             this.speedX = 0;
             this.speedY = 0;
-            this.maxSpeed = 0;
+            this.maxSpeed = Constant.sizeBall * 3 / (float)typeBall;
             forcesY[1] = Constant.gravityForce(typeBall);
         }
 

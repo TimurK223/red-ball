@@ -14,7 +14,6 @@ namespace red_ball
             
             ball = new Ball(
                 TypeBall.Base,
-                20,
                 new Point(500, 500)
             );
 
