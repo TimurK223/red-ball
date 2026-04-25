@@ -24,7 +24,7 @@ namespace red_ball
         private float speedY;
         float[] acc = new float[2];
         private float maxSpeed;
-        private float minY = 500;
+        private float minY = 600;
         private StateBall state;
         
 
@@ -82,6 +82,11 @@ namespace red_ball
         public void ChangeState(StateBall newState)
         {
             state = newState; 
+        }
+
+        public StateBall GetState()
+        {
+            return state;
         }
     }
 }

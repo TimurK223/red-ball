@@ -28,8 +28,6 @@ namespace red_ball
         {
             return Direction.Length == 0;
         }
-
-
     }
 
 
