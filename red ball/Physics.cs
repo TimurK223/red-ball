@@ -74,6 +74,11 @@ namespace red_ball
             end = _end;
         }
 
+        public Vector((int x, int y) p1,  (int x, int y) p2)
+        {
+            start = new Point(p1.x, p1.y);
+            end = new Point(p2.x, p2.y);
+        }
 
         public static Vector operator +(Vector v1, Vector v2)
         {

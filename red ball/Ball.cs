@@ -10,9 +10,9 @@ namespace red_ball
     public class Ball
     {   
         private static Dictionary<Keys, Action<Ball>> MoveDirection = new Dictionary<Keys, Action<Ball>>() { 
-            {Keys.A, (b) => b.forcesX[0] = new Force(1, new Vector( new Point(0, 0), new Point(-Constant.sizeBall/2, 0)))},
-            {Keys.D, (b) => b.forcesX[0] = new Force(1, new Vector( new Point(0, 0), new Point(Constant.sizeBall/2, 0)))},
-            {Keys.Space, (b) => b.forcesY[1] = new Force(1, new Vector( new Point(0,0), new Point(0, -Constant.sizeBall/2))) }
+            {Keys.A, (b) => b.forcesX[0] = new Force(1, new Vector((0, 0), (-Constant.sizeBall/2, 0)))},
+            {Keys.D, (b) => b.forcesX[0] = new Force(1, new Vector( (0, 0),(Constant.sizeBall/2, 0)))},
+            {Keys.Space, (b) => b.forcesY[0] = new Force(1, new Vector( (0,0), (0, -Constant.sizeBall/2))) }
         };
         private static Dictionary<Keys, Action<Ball>> NotMoveDirection = new Dictionary<Keys, Action<Ball>>() {
             {Keys.A, (b) => b.forcesX[0] = Constant.zeroForce},
@@ -39,19 +39,10 @@ namespace red_ball
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 0;
-            //forcesY[0] = new Force((float)_typeBall, new Vector()
+            forcesY[1] = new Force((float)typeBall, new Vector((0, 0), (0, 20))); 
         }
 
-        public void PaintBall() // вынести 
-        {
-            float x = center.X - size;
-            float y = center.Y - size;
-            float width = 2 * size;
-            float height = 2 * size;
-            var pen = new Pen(Color.Black, 3);
-            g.DrawEllipse(pen, x, y, width, height);
-            g.FillEllipse(Brushes.Red, x, y, width, height);
-        }
+        
 
         public void AddForce (KeyEventArgs e)
         {
@@ -63,8 +54,8 @@ namespace red_ball
         {
             if (NotMoveDirection.ContainsKey(e.KeyCode))
             {
-                forcesX = new Force[2] { Constant.zeroForce, Constant.zeroForce };
-                forcesY = new Force[2] { Constant.zeroForce, Constant.zeroForce };
+                forcesX[0] =   Constant.zeroForce;
+                forcesY[0] = Constant.zeroForce;
                 speedX = 0;
                 speedY = 0;
             }
@@ -76,10 +67,6 @@ namespace red_ball
             CalculateSpeed();
             СalculateВisplacement();
             
-        }
-        public void Move() // переработать 
-        {
-            PaintBall();
         }
 
         public void CalculateSpeed()

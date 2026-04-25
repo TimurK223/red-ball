@@ -12,7 +12,7 @@ namespace red_ball
         public Form1()
         {
             InitializeComponent();
-
+            
             ball = new Ball(
                 TypeBall.Base,
                 50,
@@ -27,15 +27,6 @@ namespace red_ball
             timer.Start();
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            var graphics = e.Graphics;
-            ball.g = graphics;  
-            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            ball.Move(); 
-        }
-
-        
 
         private void Movee(object ? sender, KeyEventArgs e)
         {
