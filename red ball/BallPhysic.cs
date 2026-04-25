@@ -24,5 +24,52 @@ namespace red_ball
         private float speedY;
         float[] acc = new float[2];
         private float maxSpeed;
+
+
+
+        public void AddForce(KeyEventArgs e)
+        {
+            if (MoveDirection.ContainsKey(e.KeyCode)) MoveDirection[e.KeyCode](this);
+            Update();
+        }
+
+        public void DeleteForce(KeyEventArgs e)
+        {
+            if (NotMoveDirection.ContainsKey(e.KeyCode))
+            {
+                forcesX[0] = Constant.zeroForce;
+                forcesY[0] = Constant.zeroForce;
+                speedX = 0;
+                speedY = 0;
+            }
+            Update();
+        }
+
+
+        public void CalculateSpeed()
+        {
+            speedX = acc[0];
+            speedY = acc[1];
+        }
+
+        public void CalculateAcceleration()
+        {
+            var fX = forcesX.Aggregate((f1, f2) => f1 + f2);
+            var fY = forcesY.Aggregate((f1, f2) => f1 + f2);
+            var fXY = fX + fY;
+            var dirX = fXY.Direction.end.X == 0 & fXY.Direction.start.X == 0 ? 0 : fXY.Direction.end.X / Math.Abs(fXY.Direction.end.X);
+            var dirY = fXY.Direction.end.Y == 0 & fXY.Direction.start.Y == 0 ? 0 : fXY.Direction.end.Y / Math.Abs(fXY.Direction.end.Y);
+
+
+            acc[0] = fXY.Direction.Length * dirX / (float)this._typeBall;
+            acc[1] = fXY.Direction.Length * dirY / (float)this._typeBall;
+
+        }
+
+        public void СalculateВisplacement()
+        {
+            center.X += speedX;
+            center.Y += speedY;
+        }
     }
 }
