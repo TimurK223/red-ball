@@ -24,7 +24,7 @@ namespace red_ball
         private float speedY;
         float[] acc = new float[2];
         private float maxSpeed;
-        private float minY = 600;
+        private float minY = 500;
         private StateBall state;
         
 

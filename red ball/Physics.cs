@@ -5,15 +5,16 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 
 namespace red_ball
 {
     public class Force
     {
-        private float Multiplier {  get; set;}
-        public Vector Direction { get; } 
+        private float Multiplier { get; set; }
+        public Vector Direction { get; }
 
-        public Force(float mult, Vector v) 
+        public Force(float mult, Vector v)
         {
             Multiplier = mult;
             Direction = v;
@@ -22,6 +23,15 @@ namespace red_ball
         public static Force operator +(Force f1, Force f2)
         {
             return new Force(1, f1.Direction * f1.Multiplier + f2.Direction * f2.Multiplier);
+        }
+        public static bool operator ==(Force f1, Force f2)
+        {
+            return f1.Direction == f2.Direction && f1.Direction * f1.Multiplier == f2.Direction * f2.Multiplier;
+        }
+
+        public static bool operator !=(Force f1, Force f2)
+        {
+            return f1.Direction != f2.Direction || f1.Direction * f1.Multiplier != f2.Direction * f2.Multiplier;
         }
 
         public bool IsZeroForce()
@@ -35,7 +45,7 @@ namespace red_ball
 
     public class Point
     {
-        public float X { get; set; } 
+        public float X { get; set; }
         public float Y { get; set; }
 
         public Point(float x, float y)
@@ -57,6 +67,16 @@ namespace red_ball
         {
             return new Point(p.X * k, p.Y * k);
         }
+
+        public static bool operator ==(Point p1, Point p2)
+        {
+            return p1.X == p2.X && p1.Y == p2.Y;
+        }
+
+        public static bool operator !=(Point p1, Point p2)
+        {
+            return p1.X != p2.X || p1.Y != p2.Y;
+        }
     }
 
     public class Vector
@@ -75,7 +95,7 @@ namespace red_ball
             end = _end;
         }
 
-        public Vector((int x, int y) p1,  (int x, int y) p2)
+        public Vector((int x, int y) p1, (int x, int y) p2)
         {
             start = new Point(p1.x, p1.y);
             end = new Point(p2.x, p2.y);
@@ -91,5 +111,14 @@ namespace red_ball
             return new Vector(v.start * k, v.end * k);
         }
 
+        public static bool operator ==(Vector v1, Vector v2)
+        {
+            return v1.start == v2.start && v1.end == v2.end && v1.Length == v2.Length;
+        }
+
+        public static bool operator !=(Vector v1, Vector v2)
+        {
+            return v1.start != v2.start || v1.end != v2.end || v1.Length != v2.Length;
+        }
     }
 }
