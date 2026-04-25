@@ -9,8 +9,8 @@ namespace red_ball
     partial class Ball
     {
         private static Dictionary<Keys, Action<Ball>> MoveDirection = new Dictionary<Keys, Action<Ball>>() {
-            {Keys.A, (b) => b.forcesX[0] = new Force(1, new Vector((0, 0), (-Constant.sizeBall/2, 0)))},
-            {Keys.D, (b) => b.forcesX[0] = new Force(1, new Vector( (0, 0),(Constant.sizeBall/2, 0)))},
+            {Keys.A, (b) =>  b.Move(DirectionMovement.Backward)},
+            {Keys.D, (b) => b.Move(DirectionMovement.Forward)},
             {Keys.Space, (b) => b.Jump()  } 
         };
         private static Dictionary<Keys, Action<Ball>> NotMoveDirection = new Dictionary<Keys, Action<Ball>>() {
@@ -76,7 +76,21 @@ namespace red_ball
         public void Jump()
         {
             if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
-                forcesY[0] = new Force(1, new Vector((0, 0), (0, -100)));
+                forcesY[0] = new Force(1, new Vector((0, 0), (0, -20)));
+        }
+
+        public void Move(DirectionMovement dir)
+        {
+            if (state == StateBall.OnFloor)
+            {
+                forcesX[0] = new Force(1, new Vector((0,0), ((int)dir*20,0)));
+                forcesX[1] = new Force(1/5, new Vector((0, 0), (-(int)dir * 20, 0)));
+            }
+            else
+            {
+                forcesX[0] = new Force(1 * 1/3, new Vector((0, 0), ((int)dir * 20, 0)));
+                forcesX[1] = new Force(1 / 5 * 1/3, new Vector((0, 0), (-(int)dir * 20, 0)));
+            }
         }
 
         public void ChangeState(StateBall newState)

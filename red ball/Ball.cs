@@ -22,7 +22,7 @@ namespace red_ball
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 0;
-            forcesY[1] = new Force((float)typeBall, new Vector((0, 0), (0, 20))); 
+            forcesY[1] = Constant.gravityForce(typeBall);
         }
 
         
