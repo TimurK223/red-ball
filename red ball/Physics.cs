@@ -13,11 +13,15 @@ namespace red_ball
     {
         private float Multiplier { get; set; }
         public Vector Direction { get; }
+        private int time;
+        public TypeForce typeForce { get; }
 
-        public Force(float mult, Vector v)
+        public Force(float mult, Vector v, TypeForce t)
         {
             Multiplier = mult;
             Direction = v;
+            time = 1;
+            typeForce = t;
         }
 
         public static Force operator +(Force f1, Force f2)
