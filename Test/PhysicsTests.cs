@@ -1,5 +1,6 @@
 
 using red_ball;
+using System.Reflection.Metadata;
 using System.Windows.Forms;
 
 namespace Test
@@ -37,6 +38,15 @@ namespace Test
             b2.Update();
             b1.Update();
             Assert.AreEqual(true, b1.center.X == -b2.center.X);
+        }
+
+        [TestCase(TypeForce.MoveForward)]
+        public void AccCalculateAccelerationTest(TypeForce typeForce)
+        {
+            var f = new Force(1, new Vector((0, 0), (0, 1)), typeForce);
+            var b = new Ball(TypeBall.Base, new Point(0, 500));
+            b.minY = 500;
+            b.AddForce(f);
         }
 
     }

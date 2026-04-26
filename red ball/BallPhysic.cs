@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,28 +25,21 @@ namespace red_ball
         private float speedY;
         float[] acc = new float[2];
         private float maxSpeed;
-        private float minY = 500;
+        public float minY = 500;
         private StateBall state;
         
-
-
-
-        public void AddForce(KeyEventArgs e)
+        /// <summary>
+        ///  Пересчитывает ускорение
+        /// </summary>
+        public void CalculateAcceleration()
         {
-            if (MoveDirection.ContainsKey(e.KeyCode)) MoveDirection[e.KeyCode](this);
-            Update();
-        }
+            var fX = forcesX.Aggregate((f1, f2) => f1 + f2);
+            var fY = forcesY.Aggregate((f1, f2) => f1 + f2);
+            var fXY = fX + fY;
+            acc[0] = fXY.Direction.Length * Math.Sign((int)fXY.typeForce);
+            acc[1] = fXY.Direction.Length * Math.Sign((int)fXY.typeForce);
 
-        public void DeleteForce(KeyEventArgs e)
-        {
-            if (NotMoveDirection.ContainsKey(e.KeyCode))
-            {
-                forcesX[0] = Constant.zeroForce;
-                forcesY[0] = Constant.zeroForce;
-            }
-            Update();
         }
-
 
         public void CalculateSpeed()
         {
@@ -53,19 +47,7 @@ namespace red_ball
             speedY = acc[1];
         }
 
-        public void CalculateAcceleration()
-        {
-            var fX = forcesX.Aggregate((f1, f2) => f1 + f2);
-            var fY = forcesY.Aggregate((f1, f2) => f1 + f2);
-            var fXY = fX + fY;
-            var dirX = fXY.Direction.end.X == 0 & fXY.Direction.start.X == 0 ? 0 : fXY.Direction.end.X / Math.Abs(fXY.Direction.end.X);
-            var dirY = fXY.Direction.end.Y == 0 & fXY.Direction.start.Y == 0 ? 0 : fXY.Direction.end.Y / Math.Abs(fXY.Direction.end.Y);
-
-
-            acc[0] = fXY.Direction.Length * dirX / (float)this._typeBall;
-            acc[1] = fXY.Direction.Length * dirY / (float)this._typeBall;
-
-        }
+        
 
         public void СalculateВisplacement()
         {
@@ -81,6 +63,7 @@ namespace red_ball
 
         public void Move(DirectionMovement dir)
         {
+
             if (state == StateBall.OnFloor)
             {
                 forcesX[0] = new Force(1, new Vector((0,0), ((int)dir*20,0)));
@@ -102,5 +85,39 @@ namespace red_ball
         {
             return state;
         }
+
+        public void AddForce(KeyEventArgs e)
+        {
+            if (MoveDirection.ContainsKey(e.KeyCode)) MoveDirection[e.KeyCode](this);
+            Update();
+        }
+        /// <summary>
+        /// Не использовать, перегрузка создана только для тестов
+        /// </summary>
+        /// <param name="f"></param>
+        public void AddForce(Force f)
+        {
+            if (f.typeForce == TypeForce.MoveForward || f.typeForce == TypeForce.MoveBackward)
+            {  
+                forcesX[0] = f;
+                Update();
+            }
+            else
+            {
+                forcesY[1] = f;
+            }
+        }
+       
+
+        public void DeleteForce(KeyEventArgs e)
+        {
+            if (NotMoveDirection.ContainsKey(e.KeyCode))
+            {
+                forcesX[0] = Constant.zeroForce;
+                forcesY[0] = Constant.zeroForce;
+            }
+            Update();
+        }
+
     }
 }
