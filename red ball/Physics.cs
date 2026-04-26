@@ -26,7 +26,18 @@ namespace red_ball
 
         public static Force operator +(Force f1, Force f2)
         {
-            return new Force(1, f1.Direction * f1.Multiplier + f2.Direction * f2.Multiplier);
+            var d1 = f1.Direction * f1.Multiplier;
+            var d2 = f2.Direction * f2.Multiplier;
+            if (d1 > d2)
+            {
+                return new Force(1, d1 + d2, f1.typeForce);
+            }
+            else if (d1 < d2) 
+            {
+                return new Force(1, d1 + d2, f2.typeForce);
+            }
+
+           
         }
         public static bool operator ==(Force f1, Force f2)
         {
@@ -123,6 +134,16 @@ namespace red_ball
         public static bool operator !=(Vector v1, Vector v2)
         {
             return v1.start != v2.start || v1.end != v2.end || v1.Length != v2.Length;
+        }
+
+        public static bool operator <(Vector v1, Vector v2)
+        {
+            return v1.Length < v2.Length;
+        }
+
+        public static bool operator >(Vector v1, Vector v2)
+        {
+            return v1.Length > v2.Length;
         }
     }
 }
