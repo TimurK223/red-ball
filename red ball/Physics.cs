@@ -16,6 +16,9 @@ namespace red_ball
         private int time;
         public TypeForce typeForce { get; }
 
+        /// <summary>
+        /// Создает силу которая только появилась 
+        /// </summary>
         public Force(float mult, Vector v, TypeForce t)
         {
             Multiplier = mult;
@@ -24,19 +27,35 @@ namespace red_ball
             typeForce = t;
         }
 
+        /// <summary>
+        /// Для сложения сил
+        /// </summary>
+        private Force(float mult, Vector v, TypeForce ty, int time )
+        {
+            Multiplier = mult;
+            Direction = v;
+            time = time;
+            typeForce = ty;
+        }
+        /// <summary>
+        /// Складывает силы, у новой силы тип - это тип большей по модулю силы.
+        /// </summary>
         public static Force operator +(Force f1, Force f2)
         {
             var d1 = f1.Direction * f1.Multiplier;
             var d2 = f2.Direction * f2.Multiplier;
             if (d1 > d2)
             {
-                return new Force(1, d1 + d2, f1.typeForce);
+                return new Force(1, d1 + d2, f1.typeForce,f1.time);
             }
             else if (d1 < d2) 
             {
-                return new Force(1, d1 + d2, f2.typeForce);
+                return new Force(1, d1 + d2, f2.typeForce,f2.time);
             }
-
+            else
+            {
+                return Constant.zeroForce;
+            }
            
         }
         public static bool operator ==(Force f1, Force f2)
