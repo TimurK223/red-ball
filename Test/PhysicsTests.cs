@@ -41,7 +41,7 @@ namespace Test
             Assert.AreEqual(true, b1.center.X == -b2.center.X);
         }
 
-        [TestCase(TypeForce.MoveForward, 1, 0) ]
+        [TestCase(TypeForce.MoveForward, 3, 0) ]
         public void AccCalculateAccelerationTest(TypeForce typeForce, int result, int cell)
         {
             
@@ -49,42 +49,42 @@ namespace Test
             b.minY = 500;
             b.Move(TypeForce.MoveForward);
             b.Update();
-            Assert.AreEqual(result, (int)b.Acc[cell].scalar);
+            Assert.AreEqual(result, (int)b.Acc[cell]);
         }
 
-        [TestCase(TypeForce.MoveForward, 1, 0)]
-        public void CalculateSpeedTest(TypeForce typeForce, int result, int cell)
+        [TestCase(TypeForce.MoveForward, 3, 0,1)]
+        [TestCase(TypeForce.MoveForward, 6, 0, 2)]
+        public void CalculateSpeedXTest(TypeForce typeForce, int result, int cell, int time)
         {
             var b = new Ball(TypeBall.Base, new Point(0, 500));
             b.minY = 500;
             b.Move(TypeForce.MoveForward);
-            b.Update();
+            for (var i = 0; i < time; i++)
+            {
+                b.CalculateForces();
+                b.Update();
+            }
             Assert.AreEqual(result, b.SpeedX);
         }
 
-
-        public static IEnumerable<Force[]> GetTestData()
+        [TestCase(TypeForce.Gravity, 10, 0, 1)]
+        [TestCase(TypeForce.Gravity, 20, 0, 2)]
+        public void CalculateSpeedYTest(TypeForce typeForce, int result, int cell, int time)
         {
-            yield return new Force[] { red_ball.Constant.zeroForce, new Force(1, new Vector((0,0), (1,1)), TypeForce.MoveForward)};
-           
+            var b = new Ball(TypeBall.Base, new Point(0, 100));
+            b.minY = 500;
+            if (typeForce == TypeForce.Jump)
+                b.Jump();
+            for (var i = 0; i < time; i++)
+            {
+                b.CalculateForces();
+                b.Update();
+            }
+            Assert.AreEqual(result, b.SpeedY);
         }
 
-        //[Test]
-        //[TestCaseSource(nameof(GetTestData))]
-        //public void ForcePlusForce(IEnumerable<Force> forces, int res)
-        //{
-        //    foreach (var f in forces)
-        //    {
 
-        //    }
-        //}
 
-        //[TestCase(new Force(1, new Vector((0,0), (0,0)), TypeForce.None), (Force) (new Force(1, new Vector((0, 0), (0, 0)), TypeForce.None)), 1)]
-        //public void ForcePlusForce(Force f1, Force f2, int ResTime)
-        //{
-        //    var newF = f1 + f2;
-        //    Assert.AreEqual(ResTime, newF.Time);
-        //}
 
     }
 }

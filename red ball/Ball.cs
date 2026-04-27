@@ -22,7 +22,7 @@ namespace red_ball
             this.SpeedY = 0;
             this.maxSpeed = Constant.sizeBall * 3 / (float)typeBall;
             forcesY[1] = Constant.gravityForce(typeBall);
-            Acc = new (float, int)[3];
+            Acc = new float[3];
         }
 
         

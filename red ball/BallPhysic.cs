@@ -24,7 +24,7 @@ namespace red_ball
         private Force[] forcesY = new Force[2] { Constant.zeroForce, Constant.zeroForce };
         public float SpeedX { get; private set; }
         public float SpeedY { get; private set; }
-        public (float scalar, int time )[] Acc { get; private set; }
+        public float [] Acc { get; private set; }
         private float maxSpeed;
         public float minY = 1000;
         private StateBall state;
@@ -43,11 +43,8 @@ namespace red_ball
         /// </summary>
         public void CalculateAcceleration()
         {
-            
-            var pY = (float)Math.Pow(Fy.Direction.end.Y - Fy.Direction.start.Y, 2);
-            var pX = (float) Math.Pow(Fx.Direction.end.X - Fx.Direction.start.X, 2);
-            Acc[0] = ((pX * Math.Sign((int)Fx.typeForce)), Fx.Time);
-            Acc[1] = ((pY * Math.Sign((int)Fy.typeForce)), Fy.Time);
+            Acc[0] = Fx.CalculateDirMultLength() * Fx.Time;
+            Acc[1] = Fy.CalculateDirMultLength() * Fy.Time;
             Fx.Tick();
             Fy.Tick();
 
@@ -55,8 +52,8 @@ namespace red_ball
 
         public void CalculateSpeed()
         {
-            SpeedX = Acc[0].scalar * Acc[0].time;
-            SpeedY = Acc[1].scalar * Acc[1].time;
+            SpeedX = Acc[0];
+            SpeedY = Acc[1];
         }
 
         

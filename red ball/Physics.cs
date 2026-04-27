@@ -77,6 +77,11 @@ namespace red_ball
         {
             Time++;
         }
+
+        public float CalculateDirMultLength()
+        {
+            return Direction.Length * Math.Sign( (int)typeForce);
+        }
     }
 
 

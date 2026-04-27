@@ -38,6 +38,7 @@ namespace red_ball
 
         private void FormPaint(object ? sender, EventArgs e) 
         {
+            ball.CalculateForces();
             ball.Update();
             Invalidate();
         }
