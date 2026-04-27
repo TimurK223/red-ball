@@ -20,7 +20,7 @@ namespace red_ball
         /// <summary>
         /// Сила гравитации
         /// </summary>
-        static public Func<TypeBall, Force>gravityForce = (t) => new Force((float)t*9.8f, new Vector((0,0), (0,1)), TypeForce.Gravity);
+        static public Func<TypeBall, Force>gravityForce = (t) => new Force((float)t/2, new Vector((0,0), (0,20)), TypeForce.Gravity);
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ namespace red_ball
         Archimed = -4,
         MoveBackward,
         Friction,
-        ForceJump,
+        Jump,
         None,
         Gravity,
         MoveForward,

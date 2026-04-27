@@ -22,8 +22,8 @@ namespace Test
 
             var b1 = new Ball(TypeBall.Base, new Point(500, 500));
             var b2 = new Ball(TypeBall.Stone, new Point(500, 500));
-            b2.Move(DirectionMovement.Forward);
-            b1.Move(DirectionMovement.Forward);
+            b2.Move(TypeForce.MoveForward);
+            b1.Move(TypeForce.MoveForward);
             b2.Update();
             b1.Update();
             Assert.AreEqual(true, b1.center.X >  b2.center.X);
@@ -34,8 +34,8 @@ namespace Test
         {
             var b1 = new Ball(TypeBall.Base, new Point(0, 500));
             var b2 = new Ball(TypeBall.Base, new Point(0, 500));
-            b2.Move(DirectionMovement.Forward);
-            b1.Move(DirectionMovement.Backward);
+            b2.Move(TypeForce.MoveForward);
+            b1.Move(TypeForce.MoveBackward);
             b2.Update();
             b1.Update();
             Assert.AreEqual(true, b1.center.X == -b2.center.X);
@@ -44,10 +44,10 @@ namespace Test
         [TestCase(TypeForce.MoveForward, 1, 0) ]
         public void AccCalculateAccelerationTest(TypeForce typeForce, int result, int cell)
         {
-            var f = new Force(1, new Vector((0, 0), (0, 1)), typeForce);
+            
             var b = new Ball(TypeBall.Base, new Point(0, 500));
             b.minY = 500;
-            b.AddForce(f);
+            b.Move(TypeForce.MoveForward);
             b.Update();
             Assert.AreEqual(result, (int)b.Acc[cell].scalar);
         }
@@ -55,10 +55,9 @@ namespace Test
         [TestCase(TypeForce.MoveForward, 1, 0)]
         public void CalculateSpeedTest(TypeForce typeForce, int result, int cell)
         {
-            var f = new Force(1, new Vector((0, 0), (0, 1)), typeForce);
             var b = new Ball(TypeBall.Base, new Point(0, 500));
             b.minY = 500;
-            b.AddForce(f);
+            b.Move(TypeForce.MoveForward);
             b.Update();
             Assert.AreEqual(result, b.SpeedX);
         }

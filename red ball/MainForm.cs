@@ -14,7 +14,7 @@ namespace red_ball
             
             ball = new Ball(
                 TypeBall.Base,
-                new Point(500, 500)
+                new Point(500, 300)
             );
 
             var timer = new Timer();
@@ -38,7 +38,7 @@ namespace red_ball
 
         private void FormPaint(object ? sender, EventArgs e) 
         {
-            
+            ball.Update();
             Invalidate();
         }
 
@@ -55,7 +55,7 @@ namespace red_ball
                 g.DrawEllipse(pen, x, y, w, h);
                 g.FillEllipse(Brushes.Red, x, y, w, h);
             }
-            ball.Update();
+            
         }
 
 

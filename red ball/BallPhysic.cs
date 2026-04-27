@@ -4,14 +4,15 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace red_ball
 {
     partial class Ball
     {
         private static Dictionary<Keys, Action<Ball>> MoveDirection = new Dictionary<Keys, Action<Ball>>() {
-            {Keys.A, (b) =>  b.Move(DirectionMovement.Backward)},
-            {Keys.D, (b) => b.Move(DirectionMovement.Forward)},
+            {Keys.A, (b) =>  b.Move(TypeForce.MoveBackward)},
+            {Keys.D, (b) => b.Move(TypeForce.MoveForward)},
             {Keys.Space, (b) => b.Jump()  } 
         };
         private static Dictionary<Keys, Action<Ball>> NotMoveDirection = new Dictionary<Keys, Action<Ball>>() {
@@ -25,21 +26,30 @@ namespace red_ball
         public float SpeedY { get; private set; }
         public (float scalar, int time )[] Acc { get; private set; }
         private float maxSpeed;
-        public float minY = 500;
+        public float minY = 1000;
         private StateBall state;
-        
+        private Force Fx = Constant.zeroForce;
+        private Force Fy = Constant.zeroForce;
+
+        public void CalculateForces()
+        {
+            var newFx = forcesX.Aggregate((f1, f2) => f1 + f2);
+            var newFy = forcesY.Aggregate((f1, f2) => f1 + f2);
+            if (newFx != Fx) { Fx = newFx; }
+            if (newFy != Fy) { Fy = newFy; }
+        }
         /// <summary>
         ///  Пересчитывает ускорение
         /// </summary>
         public void CalculateAcceleration()
         {
-            var fX = forcesX.Aggregate((f1, f2) => f1 + f2);
-            var fY = forcesY.Aggregate((f1, f2) => f1 + f2);
-            var fXY = fX + fY;
-            var pY = (float)Math.Pow(fXY.Direction.end.Y - fXY.Direction.start.Y, 2);
-            var pX = (float) Math.Pow(fXY.Direction.end.X - fXY.Direction.start.X, 2);
-            Acc[0] = ((pX * Math.Sign((int)fXY.typeForce)), fXY.Time);
-            Acc[1] = ((pY * Math.Sign((int)fXY.typeForce)), fXY.Time);
+            
+            var pY = (float)Math.Pow(Fy.Direction.end.Y - Fy.Direction.start.Y, 2);
+            var pX = (float) Math.Pow(Fx.Direction.end.X - Fx.Direction.start.X, 2);
+            Acc[0] = ((pX * Math.Sign((int)Fx.typeForce)), Fx.Time);
+            Acc[1] = ((pY * Math.Sign((int)Fy.typeForce)), Fy.Time);
+            Fx.Tick();
+            Fy.Tick();
 
         }
 
@@ -59,23 +69,31 @@ namespace red_ball
 
         public void Jump()
         {
-            //if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
-            //    forcesY[0] = new Force(1, new Vector((0, 0), (0, -20)));
+            if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
+            { 
+                forcesY[0] = new Force(1, new Vector((0, 0), (0, 3)), TypeForce.Jump);
+                CalculateForces();
+                Update();
+                forcesY[0] = Constant.zeroForce; 
+                
+            }
         }
 
-        public void Move(DirectionMovement dir)
+        public void Move(TypeForce dir)
         {
 
-            //if (state == StateBall.OnFloor)
-            //{
-            //    forcesX[0] = new Force(1, new Vector((0,0), ((int)dir*20,0)));
-            //    forcesX[1] = new Force(1/5, new Vector((0, 0), (-(int)dir * 20, 0)));
-            //}
-            //else
-            //{
-            //    forcesX[0] = new Force(1 * 1/3, new Vector((0, 0), ((int)dir * 20, 0)));
-            //    forcesX[1] = new Force(1 / 5 * 1/3, new Vector((0, 0), (-(int)dir * 20, 0)));
-            //}
+            if (state == StateBall.OnFloor)
+            {
+                forcesX[0] = new Force(1 / (int)_typeBall, new Vector((0, 0), ( 3, 0)), dir);
+                forcesX[1] = new Force(1 / 5 * (int)_typeBall, new Vector((0, 0), (1, 0)), (TypeForce)(-(int)dir));
+                CalculateForces();
+            }
+            else
+            {
+                forcesX[0] = new Force(1 / 3 , new Vector((0, 0), (1, 0)), dir);
+                forcesX[1] = new Force(1 / 5 / 3 * (int)_typeBall, new Vector((0, 0), (1, 0)), (TypeForce)(-(int)dir));
+                CalculateForces();
+            }
         }
 
         public void ChangeState(StateBall newState)
@@ -118,6 +136,7 @@ namespace red_ball
             {
                 forcesX[0] = Constant.zeroForce;
                 forcesY[0] = Constant.zeroForce;
+                CalculateForces();
             }
             Update();
         }
