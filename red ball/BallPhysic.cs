@@ -52,7 +52,11 @@ namespace red_ball
 
         public void CalculateSpeed()
         {
-            SpeedX = maxSpeed > Acc[0] ? Acc[0] : maxSpeed;
+            if (Math.Abs(SpeedX) != maxSpeed || forcesX[0].IsZeroForce())
+            {
+                SpeedX = maxSpeed > Math.Abs(Acc[0]) ? Acc[0] : maxSpeed * Math.Sign((float)Fx.typeForce);
+            }
+            
             SpeedY = Acc[1];
         }
 
@@ -82,7 +86,7 @@ namespace red_ball
             if (state == StateBall.OnFloor)
             {
                 forcesX[0] = new Force(1 / (int)_typeBall, new Vector((0, 0), ( 3, 0)), dir);
-                //forcesX[1] = new Force(1 / 5 * (int)_typeBall, new Vector((0, 0), (2, 0)), (TypeForce)(-(int)dir));
+                forcesX[1] = new Force(1 / 5 * (int)_typeBall, new Vector((0, 0), (3, 0)), (TypeForce)(-(int)dir));
                 CalculateForces();
             }
             else
@@ -125,15 +129,16 @@ namespace red_ball
                 forcesY[1] = f;
             }
         }
-       
+
 
         public void DeleteForce(KeyEventArgs e)
         {
             if (NotMoveDirection.ContainsKey(e.KeyCode))
             {
-                forcesX[1] = forcesX[0] / 2f;
+                forcesX[1] = forcesX[0] / 1.05f;
                 forcesX[0] = Constant.zeroForce;
                 forcesY[0] = Constant.zeroForce;
+                CalculateForces();
                 Update();
             }
         }

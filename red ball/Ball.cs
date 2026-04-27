@@ -32,7 +32,7 @@ namespace red_ball
         {
             if (forcesX[0].IsZeroForce() && (int)SpeedX !=0 )
             {
-                forcesX[1] /= 1.2f; ;
+                forcesX[1] /= 1.05f; ;
                 CalculateForces();
 
 

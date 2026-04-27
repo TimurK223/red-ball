@@ -12,7 +12,7 @@ namespace red_ball
         /// <summary>
         /// Радиус мяча 
         /// </summary>
-        static public int sizeBall = 20;
+        static public int sizeBall = 50;
         /// <summary>
         /// Сила 0 (для обозначения отсутствия силы)
         /// </summary>
@@ -21,7 +21,7 @@ namespace red_ball
         /// Сила гравитации
         /// </summary>
         static public Func<TypeBall, Force>gravityForce = (t) => new Force((float)t/2, new Vector((0,0), (0,20)), TypeForce.Gravity);
-        static public int MaxSpeed = 50;
+        static public int MaxSpeed = 30;
     }
 
     /// <summary>
