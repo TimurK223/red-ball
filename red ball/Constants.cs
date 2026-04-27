@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace red_ball
 {
     
-    internal class Constant
+    public static class Constant
     {
         /// <summary>
         /// Радиус мяча 

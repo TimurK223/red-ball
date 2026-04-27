@@ -18,10 +18,11 @@ namespace red_ball
         {
             _typeBall = typeBall;
             this.center = center;
-            this.speedX = 0;
-            this.speedY = 0;
+            this.SpeedX = 0;
+            this.SpeedY = 0;
             this.maxSpeed = Constant.sizeBall * 3 / (float)typeBall;
             forcesY[1] = Constant.gravityForce(typeBall);
+            Acc = new (float, int)[3];
         }
 
         

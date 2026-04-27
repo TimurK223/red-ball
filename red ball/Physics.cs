@@ -13,7 +13,7 @@ namespace red_ball
     {
         private float Multiplier { get; set; }
         public Vector Direction { get; }
-        private int time;
+        public int Time { get; private set; }
         public TypeForce typeForce { get; }
 
         /// <summary>
@@ -23,20 +23,20 @@ namespace red_ball
         {
             Multiplier = mult;
             Direction = v;
-            time = 1;
+            Time = 1;
             typeForce = t;
         }
 
-        /// <summary>
-        /// Для сложения сил
-        /// </summary>
-        private Force(float mult, Vector v, TypeForce ty, int time )
-        {
-            Multiplier = mult;
-            Direction = v;
-            time = time;
-            typeForce = ty;
-        }
+        ///// <summary>
+        ///// Для сложения сил
+        ///// </summary>
+        //private Force(float mult, Vector v, TypeForce ty, int time )
+        //{
+        //    Multiplier = mult;
+        //    Direction = v;
+        //    time = time;
+        //    typeForce = ty;
+        //}
         /// <summary>
         /// Складывает силы, у новой силы тип - это тип большей по модулю силы.
         /// </summary>
@@ -46,11 +46,11 @@ namespace red_ball
             var d2 = f2.Direction * f2.Multiplier;
             if (d1 > d2)
             {
-                return new Force(1, d1 + d2, f1.typeForce,f1.time);
+                return new Force(1, d1 + d2, f1.typeForce);
             }
             else if (d1 < d2) 
             {
-                return new Force(1, d1 + d2, f2.typeForce,f2.time);
+                return new Force(1, d1 + d2, f2.typeForce);
             }
             else
             {

@@ -21,9 +21,9 @@ namespace red_ball
         };
         private Force[] forcesX = new Force[2] { Constant.zeroForce, Constant.zeroForce };
         private Force[] forcesY = new Force[2] { Constant.zeroForce, Constant.zeroForce };
-        private float speedX;
-        private float speedY;
-        float[] acc = new float[2];
+        public float SpeedX { get; private set; }
+        public float SpeedY { get; private set; }
+        public (float scalar, int time )[] Acc { get; private set; }
         private float maxSpeed;
         public float minY = 500;
         private StateBall state;
@@ -36,44 +36,46 @@ namespace red_ball
             var fX = forcesX.Aggregate((f1, f2) => f1 + f2);
             var fY = forcesY.Aggregate((f1, f2) => f1 + f2);
             var fXY = fX + fY;
-            acc[0] = fXY.Direction.Length * Math.Sign((int)fXY.typeForce);
-            acc[1] = fXY.Direction.Length * Math.Sign((int)fXY.typeForce);
+            var pY = (float)Math.Pow(fXY.Direction.end.Y - fXY.Direction.start.Y, 2);
+            var pX = (float) Math.Pow(fXY.Direction.end.X - fXY.Direction.start.X, 2);
+            Acc[0] = ((pX * Math.Sign((int)fXY.typeForce)), fXY.Time);
+            Acc[1] = ((pY * Math.Sign((int)fXY.typeForce)), fXY.Time);
 
         }
 
         public void CalculateSpeed()
         {
-            speedX = acc[0];
-            speedY = acc[1];
+            SpeedX = Acc[0].scalar * Acc[0].time;
+            SpeedY = Acc[1].scalar * Acc[1].time;
         }
 
         
 
         public void СalculateВisplacement()
         {
-            center.X += speedX;
-            center.Y = -(center.Y + speedY) >= -minY ? center.Y + speedY : minY;
+            center.X += SpeedX;
+            center.Y = -(center.Y + SpeedY) >= -minY ? center.Y + SpeedY : minY;
         }
 
         public void Jump()
         {
-            if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
-                forcesY[0] = new Force(1, new Vector((0, 0), (0, -20)));
+            //if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
+            //    forcesY[0] = new Force(1, new Vector((0, 0), (0, -20)));
         }
 
         public void Move(DirectionMovement dir)
         {
 
-            if (state == StateBall.OnFloor)
-            {
-                forcesX[0] = new Force(1, new Vector((0,0), ((int)dir*20,0)));
-                forcesX[1] = new Force(1/5, new Vector((0, 0), (-(int)dir * 20, 0)));
-            }
-            else
-            {
-                forcesX[0] = new Force(1 * 1/3, new Vector((0, 0), ((int)dir * 20, 0)));
-                forcesX[1] = new Force(1 / 5 * 1/3, new Vector((0, 0), (-(int)dir * 20, 0)));
-            }
+            //if (state == StateBall.OnFloor)
+            //{
+            //    forcesX[0] = new Force(1, new Vector((0,0), ((int)dir*20,0)));
+            //    forcesX[1] = new Force(1/5, new Vector((0, 0), (-(int)dir * 20, 0)));
+            //}
+            //else
+            //{
+            //    forcesX[0] = new Force(1 * 1/3, new Vector((0, 0), ((int)dir * 20, 0)));
+            //    forcesX[1] = new Force(1 / 5 * 1/3, new Vector((0, 0), (-(int)dir * 20, 0)));
+            //}
         }
 
         public void ChangeState(StateBall newState)
@@ -97,6 +99,7 @@ namespace red_ball
         /// <param name="f"></param>
         public void AddForce(Force f)
         {
+            forcesY[1] = Constant.zeroForce;
             if (f.typeForce == TypeForce.MoveForward || f.typeForce == TypeForce.MoveBackward)
             {  
                 forcesX[0] = f;
