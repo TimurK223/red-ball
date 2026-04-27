@@ -73,6 +73,7 @@ namespace red_ball
             if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
             { 
                 forcesY[0] = new Force(1, new Vector((0, 0), (0, 3 * size)), TypeForce.Jump);
+                ChangeState(StateBall.InFall);
             }
         }
 

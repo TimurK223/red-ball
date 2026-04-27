@@ -32,14 +32,14 @@ namespace red_ball
             {
                 forcesX[1] /= 1.05f; ;
                 CalculateForces();
-
-
             }
             else
             {
                 forcesX[1] = Constant.zeroForce;
                 CalculateForces();
             }
+            if (state != StateBall.OnFloor)
+                forcesY[0] = Constant.zeroForce;
             CalculateAcceleration();
             CalculateSpeed();
             СalculateВisplacement();
