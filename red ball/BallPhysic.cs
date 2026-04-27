@@ -80,16 +80,16 @@ namespace red_ball
         public void Move(TypeForce dir)
         {
 
-            if (state == StateBall.OnFloor)
-            {
+            //if (state == StateBall.OnFloor)
+            //{
                 forcesX[0] = new Force(1 / (int)_typeBall, new Vector((0, 0), ( 3, 0)), dir);
                 forcesX[1] = new Force(1 / 5 * (int)_typeBall, new Vector((0, 0), (3, 0)), (TypeForce)(-(int)dir));
-            }
-            else
-            {
-                forcesX[0] = new Force(1 / 3 , new Vector((0, 0), (1, 0)), dir);
-                forcesX[1] = new Force(1 / 5 / 3 * (int)_typeBall, new Vector((0, 0), (1, 0)), (TypeForce)(-(int)dir));
-            }
+            //}
+            //else
+            //{
+            //    forcesX[0] = new Force(1 / 3 , new Vector((0, 0), (1, 0)), dir);
+            //    forcesX[1] = new Force(1 / 5 / 3 * (int)_typeBall, new Vector((0, 0), (1, 0)), (TypeForce)(-(int)dir));
+            //}
         }
 
         public void ChangeState(StateBall newState)
@@ -128,7 +128,7 @@ namespace red_ball
         {
             if (NotMoveDirection.ContainsKey(e.KeyCode))
             {
-                forcesX[1] = forcesX[0] / 1.05f;
+                forcesX[1] = forcesX[0] / 1.005f;
                 NotMoveDirection[e.KeyCode](this);
                 
             }
