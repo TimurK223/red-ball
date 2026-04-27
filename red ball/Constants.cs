@@ -21,6 +21,7 @@ namespace red_ball
         /// Сила гравитации
         /// </summary>
         static public Func<TypeBall, Force>gravityForce = (t) => new Force((float)t/2, new Vector((0,0), (0,20)), TypeForce.Gravity);
+        static public int MaxSpeed = 50;
     }
 
     /// <summary>

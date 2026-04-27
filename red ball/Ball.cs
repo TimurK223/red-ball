@@ -20,7 +20,7 @@ namespace red_ball
             this.center = center;
             this.SpeedX = 0;
             this.SpeedY = 0;
-            this.maxSpeed = Constant.sizeBall * 3 / (float)typeBall;
+            this.maxSpeed = Constant.MaxSpeed;
             forcesY[1] = Constant.gravityForce(typeBall);
             Acc = new float[3];
         }
@@ -30,6 +30,18 @@ namespace red_ball
         
         public void Update()
         {
+            if (forcesX[0].IsZeroForce() && (int)SpeedX !=0 )
+            {
+                forcesX[1] /= 1.2f; ;
+                CalculateForces();
+
+
+            }
+            else
+            {
+                forcesX[1] = Constant.zeroForce;
+                CalculateForces();
+            }
             CalculateAcceleration();
             CalculateSpeed();
             СalculateВisplacement();

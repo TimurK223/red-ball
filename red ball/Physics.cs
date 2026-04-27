@@ -27,16 +27,16 @@ namespace red_ball
             typeForce = t;
         }
 
-        ///// <summary>
-        ///// Для сложения сил
-        ///// </summary>
-        //private Force(float mult, Vector v, TypeForce ty, int time )
-        //{
-        //    Multiplier = mult;
-        //    Direction = v;
-        //    time = time;
-        //    typeForce = ty;
-        //}
+        /// <summary>
+        /// Для сложения сил
+        /// </summary>
+        private Force(float mult, Vector v, TypeForce ty, int time)
+        {
+            Multiplier = mult;
+            Direction = v;
+            Time = time;
+            typeForce = ty;
+        }
         /// <summary>
         /// Складывает силы, у новой силы тип - это тип большей по модулю силы.
         /// </summary>
@@ -46,10 +46,14 @@ namespace red_ball
             var d2 = f2.Direction * f2.Multiplier;
             if (d1 > d2)
             {
+                d1 *= (float)Math.Sign((int)f1.typeForce);
+                d2 *= (float)Math.Sign((int)f2.typeForce);
                 return new Force(1, d1 + d2, f1.typeForce);
             }
             else if (d1 < d2) 
             {
+                d1 *= (float)Math.Sign((int)f1.typeForce);
+                d2 *= (float)Math.Sign((int)f2.typeForce);
                 return new Force(1, d1 + d2, f2.typeForce);
             }
             else
@@ -68,6 +72,10 @@ namespace red_ball
             return f1.Direction != f2.Direction || f1.Direction * f1.Multiplier != f2.Direction * f2.Multiplier;
         }
 
+        public static Force operator /(Force f, float c)
+        {
+            return new Force(f.Multiplier, f.Direction / c, f.typeForce, f.Time) ;
+        }
         public bool IsZeroForce()
         {
             return Direction.Length == 0;
@@ -139,7 +147,7 @@ namespace red_ball
             end = _end;
         }
 
-        public Vector((int x, int y) p1, (int x, int y) p2)
+        public Vector((float x, float y) p1, (float x, float y) p2)
         {
             start = new Point(p1.x, p1.y);
             end = new Point(p2.x, p2.y);
@@ -173,6 +181,11 @@ namespace red_ball
         public static bool operator >(Vector v1, Vector v2)
         {
             return v1.Length > v2.Length;
+        }
+
+        public static Vector operator /(Vector v, float c)
+        {
+            return new Vector(new Point(v.start.X / c, v.start.Y / c), new Point(v.end.X/c, v.end.Y/c)); 
         }
     }
 }
