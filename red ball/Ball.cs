@@ -10,7 +10,7 @@ namespace red_ball
     public partial class Ball
     {   
 
-        private TypeBall _typeBall {  get; set; }
+        public TypeBall _typeBall {  get; private set; }
         public int size = Constant.sizeBall;
         public Point center;
        

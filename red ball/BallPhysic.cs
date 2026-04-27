@@ -18,7 +18,7 @@ namespace red_ball
         private static Dictionary<Keys, Action<Ball>> NotMoveDirection = new Dictionary<Keys, Action<Ball>>() {
             {Keys.A, (b) => b.forcesX[0] = Constant.zeroForce},
             {Keys.D, (b) => b.forcesX[0] = Constant.zeroForce },
-            {Keys.Space, (b) => b.forcesY[1] = Constant.zeroForce }
+            {Keys.Space, (b) => b.forcesY[0] = Constant.zeroForce }
         };
         private Force[] forcesX = new Force[2] { Constant.zeroForce, Constant.zeroForce };
         private Force[] forcesY = new Force[2] { Constant.zeroForce, Constant.zeroForce };
@@ -72,11 +72,7 @@ namespace red_ball
         {
             if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
             { 
-                forcesY[0] = new Force(1, new Vector((0, 0), (0, 3)), TypeForce.Jump);
-                CalculateForces();
-                Update();
-                forcesY[0] = Constant.zeroForce; 
-                
+                forcesY[0] = new Force(1, new Vector((0, 0), (0, 3 * size)), TypeForce.Jump);
             }
         }
 
@@ -87,13 +83,11 @@ namespace red_ball
             {
                 forcesX[0] = new Force(1 / (int)_typeBall, new Vector((0, 0), ( 3, 0)), dir);
                 forcesX[1] = new Force(1 / 5 * (int)_typeBall, new Vector((0, 0), (3, 0)), (TypeForce)(-(int)dir));
-                CalculateForces();
             }
             else
             {
                 forcesX[0] = new Force(1 / 3 , new Vector((0, 0), (1, 0)), dir);
                 forcesX[1] = new Force(1 / 5 / 3 * (int)_typeBall, new Vector((0, 0), (1, 0)), (TypeForce)(-(int)dir));
-                CalculateForces();
             }
         }
 
@@ -110,7 +104,6 @@ namespace red_ball
         public void AddForce(KeyEventArgs e)
         {
             if (MoveDirection.ContainsKey(e.KeyCode)) MoveDirection[e.KeyCode](this);
-            Update();
         }
         /// <summary>
         /// Не использовать, перегрузка создана только для тестов
@@ -122,7 +115,6 @@ namespace red_ball
             if (f.typeForce == TypeForce.MoveForward || f.typeForce == TypeForce.MoveBackward)
             {  
                 forcesX[0] = f;
-                Update();
             }
             else
             {
@@ -136,10 +128,8 @@ namespace red_ball
             if (NotMoveDirection.ContainsKey(e.KeyCode))
             {
                 forcesX[1] = forcesX[0] / 1.05f;
-                forcesX[0] = Constant.zeroForce;
-                forcesY[0] = Constant.zeroForce;
-                CalculateForces();
-                Update();
+                NotMoveDirection[e.KeyCode](this);
+                
             }
         }
 
