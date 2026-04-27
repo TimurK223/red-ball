@@ -42,6 +42,9 @@ namespace red_ball
             Name = "Form1";
             Text = "Red Ball";
             this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
         }
         
     }

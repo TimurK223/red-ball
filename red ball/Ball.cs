@@ -26,8 +26,6 @@ namespace red_ball
         }
 
         
-
-        
         public void Update()
         {
             if (forcesX[0].IsZeroForce() && (int)SpeedX !=0 )
@@ -45,13 +43,6 @@ namespace red_ball
             CalculateAcceleration();
             CalculateSpeed();
             СalculateВisplacement();
-            
         }
-
-        
-
-        
     }
-
-   
 }
