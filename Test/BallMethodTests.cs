@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Test
 {
+    [TestFixture]
     public class BallMethodTests
     {
 
@@ -14,7 +15,7 @@ namespace Test
         public void BallChangedState()
         {
 
-            var ball = new Ball(TypeBall.Base, 20, new Point(0, 0));
+            var ball = new Ball(TypeBall.Base,  new Point(0, 0));
             ball.ChangeState(StateBall.OnFloor);
             var stateBool = ball.GetState() == StateBall.OnFloor;
 
@@ -27,11 +28,11 @@ namespace Test
         public void BallOnFloor()
         {
             var startPoint = new Point(500, 500);
-            var ball = new Ball(TypeBall.Base, 20, new Point(500, 500));
+            var ball = new Ball(TypeBall.Base, new Point(500, 500));
             ball.ChangeState(StateBall.OnFloor);
             ball.Jump();
             ball.Update();
-            var t = startPoint.Y != ball.center.Y;
+            var t = startPoint != ball.center;
 
             Assert.AreEqual(true, t);
         }
@@ -44,7 +45,7 @@ namespace Test
             ball.ChangeState(StateBall.InFall);
             ball.Jump();
             ball.Update();
-            var t = startPoint.Y == ball.center.Y;
+            var t = startPoint == ball.center;
 
             Assert.AreEqual(true, t);
         }

@@ -7,6 +7,8 @@ namespace red_ball
     public partial class MainForm : Form
     {
         Ball ball;
+        private Pen pen = new Pen(Color.Black, 3); 
+        private Brush brush = Brushes.Red;
 
         public MainForm()
         {
@@ -14,16 +16,16 @@ namespace red_ball
             
             ball = new Ball(
                 TypeBall.Base,
-                20,
-                new Point(500, 500)
+                new Point(500, 300)
             );
-
+            
             var timer = new Timer();
-            timer.Interval = 20;
+            timer.Interval = 1;
             timer.Tick += FormPaint;
             KeyDown += Movee;
             KeyUp += StopMovee;
             timer.Start();
+
         }
 
 
@@ -39,24 +41,22 @@ namespace red_ball
 
         private void FormPaint(object ? sender, EventArgs e) 
         {
-            
+            ball.CalculateForces();
+            ball.Update();
             Invalidate();
         }
 
-        protected override void OnPaint(PaintEventArgs e) // Главный метод открисовки
+        protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             var g = e.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            using (Pen pen = new Pen(Color.Black, 3))
-            {
-                float x = 0, y = 0, w = 0, h = 0;
-                CalculateCenterPointBall(ref x, ref y, ref w, ref h);
 
-                g.DrawEllipse(pen, x, y, w, h);
-                g.FillEllipse(Brushes.Red, x, y, w, h);
-            }
-            ball.Update();
+            float x = 0, y = 0, w = 0, h = 0;
+            CalculateCenterPointBall(ref x, ref y, ref w, ref h);
+
+            g.DrawEllipse(pen, x, y, w, h);
+            g.FillEllipse(brush, x, y, w, h);
         }
 
 
