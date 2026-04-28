@@ -8,6 +8,6 @@ namespace red_ball
 {
     class LevelObject
     {
-        
+
     }
 }
