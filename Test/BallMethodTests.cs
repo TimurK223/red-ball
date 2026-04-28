@@ -41,7 +41,7 @@ namespace Test
         public void BallInFall()
         {
             var startPoint = new Point(500, 500);
-            var ball = new Ball(TypeBall.Base, new Point(500, 500));
+            var ball = new Ball(TypeBall.Base, 20, new Point(500, 500));
             ball.ChangeState(StateBall.InFall);
             ball.Jump();
             ball.Update();

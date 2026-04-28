@@ -71,6 +71,15 @@ namespace red_ball
         {
             return f1.Direction != f2.Direction || f1.Direction * f1.Multiplier != f2.Direction * f2.Multiplier;
         }
+        public static bool operator ==(Force f1, Force f2)
+        {
+            return f1.Direction == f2.Direction && f1.Direction * f1.Multiplier == f2.Direction * f2.Multiplier;
+        }
+
+        public static bool operator !=(Force f1, Force f2)
+        {
+            return f1.Direction != f2.Direction || f1.Direction * f1.Multiplier  != f2.Direction * f2.Multiplier;
+        }
 
         public static Force operator /(Force f, float c)
         {
@@ -171,21 +180,6 @@ namespace red_ball
         public static bool operator !=(Vector v1, Vector v2)
         {
             return v1.start != v2.start || v1.end != v2.end || v1.Length != v2.Length;
-        }
-
-        public static bool operator <(Vector v1, Vector v2)
-        {
-            return v1.Length < v2.Length;
-        }
-
-        public static bool operator >(Vector v1, Vector v2)
-        {
-            return v1.Length > v2.Length;
-        }
-
-        public static Vector operator /(Vector v, float c)
-        {
-            return new Vector(new Point(v.start.X / c, v.start.Y / c), new Point(v.end.X/c, v.end.Y/c)); 
         }
     }
 }

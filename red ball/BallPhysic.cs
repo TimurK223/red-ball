@@ -26,7 +26,7 @@ namespace red_ball
         public float SpeedY { get; private set; }
         public float [] Acc { get; private set; }
         private float maxSpeed;
-        public float minY = 1000;
+        private float minY = 500; //пока что затычка имитирующая пол
         private StateBall state;
         private Force Fx = Constant.zeroForce;
         private Force Fy = Constant.zeroForce;
