@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace red_ball
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -42,6 +42,9 @@ namespace red_ball
             Name = "Form1";
             Text = "Red Ball";
             this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.UserPaint, true);
         }
         
     }
