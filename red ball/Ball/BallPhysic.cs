@@ -1,4 +1,6 @@
-﻿using System;
+﻿using red_ball.Constants;
+using red_ball.Physic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
@@ -21,12 +23,14 @@ namespace red_ball
             {Keys.Space, (b) => b.forcesY[0] = Constant.zeroForce }
         };
         private Force[] forcesX = new Force[2] { Constant.zeroForce, Constant.zeroForce };
-        private Force[] forcesY = new Force[2] { Constant.zeroForce, Constant.zeroForce };
+        public Force[] forcesY = new Force[2] { Constant.zeroForce, Constant.zeroForce };
         public float SpeedX { get; private set; }
         public float SpeedY { get; private set; }
         public float [] Acc { get; private set; }
         private float maxSpeed;
         public float minY = 1000;
+        public float allowMaxX = 10000;
+        public float allowMinX = -10000;
         private StateBall state;
         private Force Fx = Constant.zeroForce;
         private Force Fy = Constant.zeroForce;
@@ -64,7 +68,24 @@ namespace red_ball
 
         public void СalculateВisplacement()
         {
-            center.X += SpeedX;
+            if (Math.Sign(allowMaxX) >= 0)
+            {
+                center.X = center.X + SpeedX > allowMaxX ? allowMaxX : center.X + SpeedX; 
+            }
+            else
+            {
+                center.X = center.X + SpeedX < allowMaxX ? allowMaxX : center.X + SpeedX;
+            }
+            center.Y = -(center.Y + SpeedY) >= -minY ? center.Y + SpeedY : minY;
+
+            if (Math.Sign(allowMinX) >= 0)
+            {
+                center.X = center.X + SpeedX > allowMinX ? allowMinX : center.X + SpeedX;
+            }
+            else
+            {
+                center.X = center.X + SpeedX < allowMinX ? allowMinX : center.X + SpeedX;
+            }
             center.Y = -(center.Y + SpeedY) >= -minY ? center.Y + SpeedY : minY;
         }
 
@@ -72,7 +93,7 @@ namespace red_ball
         {
             if (forcesY[0].IsZeroForce() && state == StateBall.OnFloor)
             { 
-                forcesY[0] = new Force(1, new Vector((0, 0), (0, 3 * size)), TypeForce.Jump);
+                forcesY[0] = new Force(1, new Vector((0, 0), (0, 2 * size / 2)), TypeForce.Jump);
                 ChangeState(StateBall.InFall);
             }
         }
@@ -80,16 +101,17 @@ namespace red_ball
         public void Move(TypeForce dir)
         {
 
-            //if (state == StateBall.OnFloor)
-            //{
-                forcesX[0] = new Force(1 / (int)_typeBall, new Vector((0, 0), ( 3, 0)), dir);
-                forcesX[1] = new Force(1 / 5 * (int)_typeBall, new Vector((0, 0), (3, 0)), (TypeForce)(-(int)dir));
-            //}
-            //else
-            //{
-            //    forcesX[0] = new Force(1 / 3 , new Vector((0, 0), (1, 0)), dir);
-            //    forcesX[1] = new Force(1 / 5 / 3 * (int)_typeBall, new Vector((0, 0), (1, 0)), (TypeForce)(-(int)dir));
-            //}
+            if (state == StateBall.OnFloor)
+            {
+                forcesX[0] = new Force(1 / (float)_typeBall, new Vector((0, 0), (3, 0)), dir);
+                forcesX[1] = new Force(1 / 5 * (float)_typeBall, new Vector((0, 0), (3, 0)), (TypeForce)(-(int)dir));
+                maxSpeed = Constant.MaxSpeed;
+            }
+            else
+            {
+                forcesX[0] = new Force(1/ (float)_typeBall, new Vector((0, 0), (3, 0)), dir);
+                maxSpeed = 20;
+            }
         }
 
         public void ChangeState(StateBall newState)
@@ -112,7 +134,7 @@ namespace red_ball
         /// <param name="f"></param>
         public void AddForce(Force f)
         {
-            forcesY[1] = Constant.zeroForce;
+            
             if (f.typeForce == TypeForce.MoveForward || f.typeForce == TypeForce.MoveBackward)
             {  
                 forcesX[0] = f;
@@ -128,7 +150,7 @@ namespace red_ball
         {
             if (NotMoveDirection.ContainsKey(e.KeyCode))
             {
-                forcesX[1] = forcesX[0] / 1.005f;
+                forcesX[1] = forcesX[0] / 1.015f;
                 NotMoveDirection[e.KeyCode](this);
                 
             }

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using red_ball.Constants;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
 
-namespace red_ball
+namespace red_ball.Physic
 {
     public class Force
     {
@@ -28,7 +28,7 @@ namespace red_ball
         }
 
         /// <summary>
-        /// Для сложения сил
+        /// Для сохранения времени
         /// </summary>
         private Force(float mult, Vector v, TypeForce ty, int time)
         {
@@ -46,14 +46,14 @@ namespace red_ball
             var d2 = f2.Direction * f2.Multiplier;
             if (d1 > d2)
             {
-                d1 *= (float)Math.Sign((int)f1.typeForce);
-                d2 *= (float)Math.Sign((int)f2.typeForce);
+                d1 *= Math.Sign((int)f1.typeForce);
+                d2 *= Math.Sign((int)f2.typeForce);
                 return new Force(1, d1 + d2, f1.typeForce);
             }
             else if (d1 < d2) 
             {
-                d1 *= (float)Math.Sign((int)f1.typeForce);
-                d2 *= (float)Math.Sign((int)f2.typeForce);
+                d1 *= Math.Sign((int)f1.typeForce);
+                d2 *= Math.Sign((int)f2.typeForce);
                 return new Force(1, d1 + d2, f2.typeForce);
             }
             else
@@ -88,7 +88,7 @@ namespace red_ball
 
         public float CalculateDirMultLength()
         {
-            return Direction.Length * Math.Sign( (int)typeForce);
+            return Direction.Length * Math.Sign((int)typeForce);
         }
     }
 
