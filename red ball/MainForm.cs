@@ -16,9 +16,9 @@ namespace red_ball
             
             ball = new Ball(
                 TypeBall.Base,
-                new Point(500, 300)
+                new Point(0, 500)
             );
-            
+            levelObjects = new LevelObject[] { new Wall(ball, 0,1000,1000,1000,this) };
             var timer = new Timer();
             timer.Interval = 1;
             timer.Tick += FormPaint;
@@ -57,6 +57,20 @@ namespace red_ball
 
             g.DrawEllipse(pen, x, y, w, h);
             g.FillEllipse(brush, x, y, w, h);
+
+            foreach ( var obj  in levelObjects )
+            {
+                if (obj.MustBeDrawn())
+                {
+                    obj.Draw(ref objX, ref objY, ref objW, ref objH);
+                    g.DrawRectangle(pen, objX, objY, objW, objH);
+                    obj.ChangeStateBall();
+                }
+                if (ball.GetState() != StateBall.OnFloor)
+                    ball.forcesY[1] = Constant.gravityForce(ball._typeBall);
+
+            
+            }
         }
 
 

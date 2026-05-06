@@ -1,4 +1,6 @@
-﻿using System;
+﻿using red_ball.Constants;
+using red_ball.Physic;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace red_ball
     {   
 
         public TypeBall _typeBall {  get; private set; }
-        public int size = Constant.sizeBall;
+        public float size = Constant.sizeBall;
         public Point center;
        
         public Ball(TypeBall typeBall, Point center)
@@ -39,7 +41,7 @@ namespace red_ball
                 CalculateForces();
             }
             if (state != StateBall.OnFloor)
-                forcesY[0] = Constant.zeroForce;
+                forcesY[0] /= 1.15f * (float)_typeBall;
             CalculateAcceleration();
             CalculateSpeed();
             СalculateВisplacement();

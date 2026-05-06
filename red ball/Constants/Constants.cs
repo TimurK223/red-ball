@@ -1,10 +1,11 @@
-﻿using System;
+﻿using red_ball.Physic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace red_ball
+namespace red_ball.Constants
 {
     
     public static class Constant
@@ -12,15 +13,15 @@ namespace red_ball
         /// <summary>
         /// Радиус мяча 
         /// </summary>
-        static public int sizeBall = 50;
+        static public int sizeBall = 20;
         /// <summary>
         /// Сила 0 (для обозначения отсутствия силы)
         /// </summary>
-        static public Force zeroForce = new Force(0, new Vector(new Point(0, 0), new Point(0, 0)), TypeForce.None);
+        static public Force zeroForce = new Force(0, new Vector(new Physic.Point(0, 0), new Physic.Point(0, 0)), TypeForce.None);
         /// <summary>
         /// Сила гравитации
         /// </summary>
-        static public Func<TypeBall, Force>gravityForce = (t) => new Force((float)t/2, new Vector((0,0), (0,1)), TypeForce.Gravity);
+        static public Func<TypeBall, Force>gravityForce = (t) => new Force((float)t, new Vector((0,0), (0,1)), TypeForce.Gravity);
         static public int MaxSpeed = 30;
     }
 
